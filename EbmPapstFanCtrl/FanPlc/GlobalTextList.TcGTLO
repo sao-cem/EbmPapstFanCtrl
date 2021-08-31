@@ -26,13 +26,28 @@
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>
+              <v n="TextID">"649"</v>
+              <v n="TextDefault">"Busy"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
               <v n="TextID">"223"</v>
               <v n="TextDefault">"Data"</v>
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>
+              <v n="TextID">"495"</v>
+              <v n="TextDefault">"Error"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
               <v n="TextID">"285"</v>
               <v n="TextDefault">"Init"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"261"</v>
+              <v n="TextDefault">"Input Register"</v>
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>
@@ -56,6 +71,11 @@
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>
+              <v n="TextID">"527"</v>
+              <v n="TextDefault">"Reset"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
               <v n="TextID">"86"</v>
               <v n="TextDefault">"Test %d"</v>
               <l n="LanguageTexts" t="ArrayList" />
@@ -63,6 +83,11 @@
             <o>
               <v n="TextID">"70"</v>
               <v n="TextDefault">"Test %X"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"774"</v>
+              <v n="TextDefault">"Value"</v>
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>
