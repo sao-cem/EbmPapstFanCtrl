@@ -51,7 +51,7 @@ CASE state OF
 	mbExecute := FALSE;
 
 	// if not busy, move to next
-	IF mbBusy = FALSE THEN
+	IF mbBusy = FALSE AND mbErrorFlag = FALSE THEN
 		inputs[1, mbInputAddr] := mbInputData;
 		
 		mbInputAddr := mbInputAddr + 1;
@@ -78,7 +78,7 @@ CASE state OF
 	mbExecute := FALSE;
 
 	// if not busy, go back to state 1
-	IF mbBusy = FALSE THEN
+	IF mbBusy = FALSE AND mbErrorFlag = FALSE THEN
 		mbExecute := TRUE;
 		state := 1;
 	END_IF
@@ -99,12 +99,12 @@ CASE state OF
 	mbExecute := FALSE;
 
 	// if not busy, go back to state 1
-	IF mbBusy = FALSE THEN
+	IF mbBusy = FALSE AND mbErrorFlag = FALSE THEN
 		mbExecute := TRUE;
 		state := 1;
 	END_IF
 
-4: // stop
+ELSE // stop
 	mbExecute := FALSE;
 	
 END_CASE

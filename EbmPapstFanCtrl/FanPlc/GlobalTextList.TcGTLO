@@ -6,6 +6,11 @@
         <o xml:space="preserve" t="GlobalTextListObject">
           <l n="TextList" t="ArrayList" cet="TextListRow">
             <o>
+              <v n="TextID">"606"</v>
+              <v n="TextDefault">"%"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
               <v n="TextID">"486"</v>
               <v n="TextDefault">"%h"</v>
               <l n="LanguageTexts" t="ArrayList" />
@@ -83,6 +88,46 @@
             <o>
               <v n="TextID">"70"</v>
               <v n="TextDefault">"Test %X"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"93"</v>
+              <v n="TextDefault">"TYPE MODBUS_ERRORS :
+(
+   (* Modbus communication errors *)
+   MODBUSERROR_NO_ERROR,          (* 0 *)
+   MODBUSERROR_ILLEGAL_FUNCTION,       (* 1 *)
+   MODBUSERROR_ILLEGAL_DATA_ADDRESS,       (* 2 *)
+   MODBUSERROR_ILLEGAL_DATA_VALUE,          (* 3 *)
+   MODBUSERROR_SLAVE_DEVICE_FAILURE,       (* 4 *)
+   MODBUSERROR_ACKNOWLEDGE,            (* 5 *)
+   MODBUSERROR_SLAVE_DEVICE_BUSY,       (* 6 *)
+   MODBUSERROR_NEGATIVE_ACKNOWLEDGE,       (* 7 *)
+   MODBUSERROR_MEMORY_PARITY,          (* 8 *)
+   MODBUSERROR_GATEWAY_PATH_UNAVAILABLE,    (* A *)
+   MODBUSERROR_GATEWAY_TARGET_DEVICE_FAILED_TO_RESPOND, (* B *)
+
+   (* additional Modbus error definitions *)
+   MODBUSERROR_CHARREC_TIMEOUT := 16#20,    (* 20 hex *)
+   MODBUSERROR_ILLEGAL_DATA_SIZE,       (* 21 hex *)
+   MODBUSERROR_ILLEGAL_DEVICE_ADDRESS,       (* 22 hex *)
+   MODBUSERROR_ILLEGAL_DESTINATION_ADDRESS,      (* 23 hex *)
+   MODBUSERROR_ILLEGAL_DESTINATION_SIZE,    (* 24 hex *)
+   MODBUSERROR_NO_RESPONSE,            (* 25 hex *)
+
+   (* Low level communication errors *)
+   MODBUSERROR_TXBUFFOVERRUN := 102,       (* 102 *)
+   MODBUSERROR_SENDTIMEOUT := 103,       (* 103 *)
+     MODBUSERROR_DATASIZEOVERRUN := 107,       (* 107 *)
+   MODBUSERROR_STRINGOVERRUN := 110,       (* 110 *)
+   MODBUSERROR_INVALIDPOINTER := 120,       (* 120 *)
+   MODBUSERROR_CRC := 150,          (* 150 *)
+
+   (* High level PLC errors *)
+   MODBUSERROR_INVALIDMEMORYADDRESS := 232,      (* 232 *)
+   MODBUSERROR_TRANSMITBUFFERTOOSMALL       (* 233 *)
+);
+END_TYPE"</v>
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>
