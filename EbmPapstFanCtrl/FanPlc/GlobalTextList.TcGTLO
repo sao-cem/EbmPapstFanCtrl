@@ -11,6 +11,11 @@
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>
+              <v n="TextID">"597"</v>
+              <v n="TextDefault">"%d"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
               <v n="TextID">"486"</v>
               <v n="TextDefault">"%h"</v>
               <l n="LanguageTexts" t="ArrayList" />
@@ -18,6 +23,11 @@
             <o>
               <v n="TextID">"833"</v>
               <v n="TextDefault">"%s"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"385"</v>
+              <v n="TextDefault">"%U"</v>
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>
@@ -128,6 +138,11 @@
    MODBUSERROR_TRANSMITBUFFERTOOSMALL       (* 233 *)
 );
 END_TYPE"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"257"</v>
+              <v n="TextDefault">"V %X"</v>
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>

@@ -4,13 +4,12 @@
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
 	state		: UINT := 0;
+	nextState	: UINT := 0;
 	
 	mbMaster	: ModbusRtuMaster_KL6x22B;
 	mbUnit		: BYTE := 1;
-	mbQuantity	: UINT := 1;
 	mbErrorFlag	: BOOL;
 	mbErrorId	: MODBUS_ERRORS;
-	mbExecute	: BOOL;
 	mbBusy		: BOOL;
 	mbBytesRec	: UINT;
 	
@@ -21,18 +20,20 @@ VAR
 	mbReadData	: WORD;
 	mbWriteData : WORD;
 	
-	inputs		: ARRAY [0..1, 16#D000 .. 16#D026] OF UINT;
+	inputs		: ARRAY [0..1, 16#00 .. 16#26] OF UINT;
 	idx			: WORD;
 END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[
 CASE state OF
-0: // init
-	FOR idx := 16#D000 TO 16#D026 DO
-		inputs[0, idx] := idx;
+0: // init, reset
+	FOR idx := 0 TO 16#26 DO
+		inputs[0, idx] := 16#D000 + idx;
 	END_FOR
-	mbExecute := TRUE;
+	mbInputAddr := 16#D000;
+	idx := 0;
+	nextState := 1;
 	state := 1;
 
 1: // read input registers
@@ -42,72 +43,90 @@ CASE state OF
 		MBAddr:= mbInputAddr, 
 		cbLength:= SIZEOF(mbInputData), 
 		pMemoryAddr:= ADR(mbInputData), 
-		Execute:= mbExecute, 
+		Execute:= TRUE, 
 		Timeout:= T#1S, 
 		BUSY=> mbBusy, 
 		Error=> mbErrorFlag, 
 		ErrorId=> mbErrorId, 
-		cbRead=> mbBytesRec);
-	mbExecute := FALSE;
+		cbRead=> mbBytesRec);;
 
-	// if not busy, move to next
-	IF mbBusy = FALSE AND mbErrorFlag = FALSE THEN
-		inputs[1, mbInputAddr] := mbInputData;
-		
+	// if not busy, move to next input register
+	IF mbBusy = FALSE THEN
+		inputs[1, idx] := mbInputData;
 		mbInputAddr := mbInputAddr + 1;
-		IF mbInputAddr > 16#D026 THEN
+		idx := idx + 1;
+		IF idx > 16#26 THEN
+			idx := 0;
 			mbInputAddr := 16#D000;
 		END_IF
-		
-		mbExecute := TRUE;
+
+		// reset comms and go to next state
+		mbMaster.ReadInputRegs(Execute := FALSE);
+		state := nextState;
+		// catch error
+		IF mbErrorFlag = TRUE THEN
+			state := 4;
+		END_IF
 	END_IF
 	
 2: // read holding register
 	mbMaster.ReadRegs(
 		UnitID:= mbUnit, 
-		Quantity:= mbQuantity, 
+		Quantity:= 1, 
 		MBAddr:= mbReadAddr, 
 		cbLength:= SIZEOF(mbReadData), 
 		pMemoryAddr:= ADR(mbReadData), 
-		Execute:= mbExecute, 
+		Execute:= TRUE, 
 		Timeout:= T#1S, 
 		BUSY=> mbBusy, 
 		Error=> mbErrorFlag, 
 		ErrorId=> mbErrorId, 
 		cbRead=> mbBytesRec);
-	mbExecute := FALSE;
 
-	// if not busy, go back to state 1
-	IF mbBusy = FALSE AND mbErrorFlag = FALSE THEN
-		mbExecute := TRUE;
-		state := 1;
+	// read complete
+	IF mbBusy = FALSE THEN
+		// reset comms
+		mbMaster.ReadRegs(Execute := FALSE);
+		nextState := 1;
+		state := nextState;
+		// catch error
+		IF mbErrorFlag = TRUE THEN
+			state := 4;
+		END_IF
 	END_IF
 	
 3: // write register
 	mbMaster.WriteSingleRegister(
 		UnitID:= mbUnit, 
-		Quantity:= mbQuantity, 
+		Quantity:= 1, 
 		MBAddr:= mbReadAddr, 
 		cbLength:= SIZEOF(mbWriteData), 
 		pMemoryAddr:= ADR(mbWriteData), 
-		Execute:= mbExecute, 
+		Execute:= TRUE, 
 		Timeout:= T#1S, 
 		BUSY=> mbBusy, 
 		Error=> mbErrorFlag, 
 		ErrorId=> mbErrorId, 
 		cbRead=> mbBytesRec);
-	mbExecute := FALSE;
 
-	// if not busy, go back to state 1
-	IF mbBusy = FALSE AND mbErrorFlag = FALSE THEN
-		mbExecute := TRUE;
-		state := 1;
+	// write complete
+	IF mbBusy = FALSE THEN
+		// reset comms
+		mbMaster.ReadRegs(Execute := FALSE);
+		nextState := 1;
+		state := nextState;
+		// catch error
+		IF mbErrorFlag = TRUE THEN
+			state := 4;
+		END_IF
 	END_IF
 
+4: // error, wait for reset
+
 ELSE // stop
-	mbExecute := FALSE;
 	
 END_CASE
+
 
 ]]></ST>
     </Implementation>
@@ -117,42 +136,60 @@ END_CASE
       <LineId Id="12" Count="0" />
       <LineId Id="292" Count="0" />
       <LineId Id="294" Count="1" />
-      <LineId Id="15" Count="0" />
-      <LineId Id="296" Count="0" />
+      <LineId Id="325" Count="0" />
+      <LineId Id="328" Count="1" />
+      <LineId Id="413" Count="0" />
       <LineId Id="267" Count="0" />
       <LineId Id="16" Count="0" />
       <LineId Id="232" Count="10" />
       <LineId Id="231" Count="0" />
-      <LineId Id="253" Count="0" />
       <LineId Id="230" Count="0" />
       <LineId Id="182" Count="1" />
-      <LineId Id="250" Count="1" />
-      <LineId Id="246" Count="3" />
+      <LineId Id="250" Count="0" />
+      <LineId Id="246" Count="0" />
+      <LineId Id="327" Count="0" />
+      <LineId Id="247" Count="0" />
+      <LineId Id="326" Count="0" />
+      <LineId Id="248" Count="1" />
+      <LineId Id="416" Count="0" />
+      <LineId Id="418" Count="0" />
       <LineId Id="252" Count="0" />
-      <LineId Id="245" Count="0" />
+      <LineId Id="415" Count="0" />
+      <LineId Id="446" Count="0" />
+      <LineId Id="439" Count="1" />
+      <LineId Id="438" Count="0" />
       <LineId Id="181" Count="0" />
       <LineId Id="17" Count="1" />
-      <LineId Id="25" Count="0" />
-      <LineId Id="147" Count="9" />
-      <LineId Id="146" Count="0" />
-      <LineId Id="254" Count="1" />
+      <LineId Id="394" Count="10" />
+      <LineId Id="392" Count="0" />
+      <LineId Id="408" Count="0" />
       <LineId Id="176" Count="1" />
-      <LineId Id="262" Count="0" />
-      <LineId Id="180" Count="0" />
+      <LineId Id="425" Count="1" />
+      <LineId Id="387" Count="0" />
+      <LineId Id="417" Count="0" />
+      <LineId Id="445" Count="0" />
+      <LineId Id="433" Count="1" />
+      <LineId Id="432" Count="0" />
       <LineId Id="175" Count="0" />
       <LineId Id="19" Count="1" />
       <LineId Id="157" Count="0" />
       <LineId Id="167" Count="0" />
       <LineId Id="158" Count="8" />
       <LineId Id="27" Count="0" />
-      <LineId Id="256" Count="3" />
-      <LineId Id="261" Count="0" />
-      <LineId Id="260" Count="0" />
+      <LineId Id="257" Count="2" />
+      <LineId Id="419" Count="1" />
+      <LineId Id="427" Count="1" />
+      <LineId Id="444" Count="0" />
+      <LineId Id="442" Count="1" />
+      <LineId Id="441" Count="0" />
       <LineId Id="169" Count="0" />
+      <LineId Id="435" Count="0" />
       <LineId Id="266" Count="0" />
-      <LineId Id="264" Count="1" />
+      <LineId Id="436" Count="0" />
+      <LineId Id="264" Count="0" />
       <LineId Id="14" Count="0" />
       <LineId Id="13" Count="0" />
+      <LineId Id="383" Count="0" />
       <LineId Id="145" Count="0" />
       <LineId Id="139" Count="0" />
     </LineIds>
