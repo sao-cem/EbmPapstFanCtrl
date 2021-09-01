@@ -99,7 +99,7 @@ CASE state OF
 	mbMaster.WriteSingleRegister(
 		UnitID:= mbUnit, 
 		Quantity:= 1, 
-		MBAddr:= mbReadAddr, 
+		MBAddr:= mbWriteAddr, 
 		cbLength:= SIZEOF(mbWriteData), 
 		pMemoryAddr:= ADR(mbWriteData), 
 		Execute:= TRUE, 
